@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#2b1513">
+    <meta name="description" content="打开乾隆的玩具盒，抽取一局皇家收藏。">
+    <title>乾隆的玩具盒</title>
+    <link rel="stylesheet" href="./styles.css?v=11">
+    <script type="module" src="./assets/vendor/model-viewer.min.js?v=2"></script>
+  </head>
+  <body>
+    <section class="protocol-warning" id="protocolWarning" hidden>
+      <div class="protocol-warning-card">
+        <span class="theme-seal">提示</span>
+        <h2>模型没有丢失，当前打开方式不对</h2>
+        <p>地址栏显示“文件”时，浏览器会禁止读取 GLB 和内嵌贴图。请关闭本页，然后双击输出目录里的「启动乾隆玩具盒.command」。</p>
+        <a class="primary-button" href="http://127.0.0.1:4173/">服务器已启动？打开正确页面</a>
+      </div>
+    </section>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">QIANLONG'S TOY BOX</p>
+          <h1>乾隆的玩具盒</h1>
+        </div>
+        <button class="icon-button help-button" type="button" aria-label="查看玩法">?</button>
+      </header>
+
+      <section class="stage" aria-label="乾隆收藏柜">
+        <div class="theme-reveal" aria-live="polite">
+          <span class="theme-seal">御选</span>
+          <p class="theme-name">瑾瑜本匣</p>
+          <p class="theme-hint">这一局，朕没有明说主题。</p>
+        </div>
+
+        <div class="cabinet-wrap" id="cabinetViewer">
+          <div class="cabinet-rotate-hint" id="cabinetRotateHint">左右滑动旋转柜体 · 轻点柜体进入俯视御匣</div>
+          <div class="cabinet-model-stage" id="cabinetModelStage">
+            <div class="stage-aura" aria-hidden="true"></div>
+            <model-viewer
+              id="cabinetModel"
+              src="./assets/models/imperial-cabinet.glb"
+              alt="华丽橱柜三维模型"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="800"
+              rotation-per-second="12deg"
+              interaction-prompt="none"
+              touch-action="pan-y"
+              shadow-intensity="1.4"
+              shadow-softness="0.85"
+              exposure="1.08"
+              camera-orbit="20deg 72deg auto"
+              min-camera-orbit="-45deg 45deg auto"
+              max-camera-orbit="45deg 88deg auto"
+              loading="eager">
+              <div class="model-progress" slot="progress-bar"><span></span></div>
+            </model-viewer>
+            <button class="model-open-button" id="modelOpenButton" type="button">
+              <span>拉开御匣</span><i aria-hidden="true">↓</i>
+            </button>
+          </div>
+          <div class="cabinet is-concealed" id="cabinet" aria-label="俯视瑾瑜匣百宝格">
+            <div class="cabinet-corner corner-a"></div>
+            <div class="cabinet-corner corner-b"></div>
+            <div class="cabinet-corner corner-c"></div>
+            <div class="cabinet-corner corner-d"></div>
+            <div class="tray-grid" id="trayGrid"></div>
+            <button class="cabinet-door is-closed" id="cabinetDoor" type="button" aria-label="打开瑾瑜匣">
+              <div class="door-lines"></div>
+              <div class="door-plaque">
+                <span>瑾</span>
+                <span>瑜</span>
+                <span>匣</span>
+              </div>
+              <p id="doorPrompt">轻触开匣</p>
+            </button>
+          </div>
+        </div>
+
+        <p class="gesture-tip" id="gestureTip">先轻触匣门开匣</p>
+
+        <div class="actions">
+          <button class="renew-button" id="renewButton" type="button" aria-label="关闭柜门并换一局">
+            <span class="renew-icon" aria-hidden="true">↻</span>
+            <span>换一局</span>
+          </button>
+          <button class="primary-button" id="cardButton" type="button">生成钦点卡</button>
+        </div>
+      </section>
+    </main>
+
+    <section class="intro-overlay" id="introOverlay" aria-label="乾隆开场对话">
+      <div class="intro-paper">
+        <p class="intro-kicker">紫禁城 · 私藏开匣</p>
+        <div class="portrait-frame">
+          <img id="qianlongPortrait" src="./assets/ui/qianlong.webp" alt="萌版乾隆皇帝">
+          <span class="portrait-seal">朕</span>
+        </div>
+        <div class="dialogue-box">
+          <p class="speaker">乾隆</p>
+          <p id="dialogueText">世人只知朕爱盖章，却不知道朕还有一匣子的袖珍玩具。</p>
+        </div>
+        <button class="primary-button intro-button" id="introButton" type="button">继续听旨</button>
+      </div>
+    </section>
+
+    <section class="sheet" id="detailSheet" aria-hidden="true">
+      <button class="sheet-backdrop" data-close="detail" type="button" aria-label="关闭文物卡"></button>
+      <article class="sheet-panel artifact-card">
+        <button class="sheet-close" data-close="detail" type="button" aria-label="关闭">×</button>
+        <div class="artifact-visual">
+          <img id="detailImage" src="" alt="">
+          <model-viewer
+            id="detailModel"
+            class="detail-model"
+            alt=""
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="600"
+            rotation-per-second="16deg"
+            interaction-prompt="none"
+            touch-action="pan-y"
+            shadow-intensity="1.25"
+            shadow-softness="0.9"
+            exposure="1.06"
+            loading="lazy">
+            <div class="model-progress" slot="progress-bar"><span></span></div>
+          </model-viewer>
+          <span class="artifact-index" id="detailIndex">01</span>
+        </div>
+        <div class="artifact-copy">
+          <p class="artifact-eyebrow">清宫珍玩档案</p>
+          <h2 id="detailName"></h2>
+          <div class="artifact-meta" aria-label="藏品信息">
+            <span class="meta-chip"><b>朝代</b><em id="detailDynasty"></em></span>
+            <span class="meta-chip"><b>类别</b><em id="detailCategory"></em></span>
+            <span class="meta-chip"><b>属性</b><em id="detailAttribute"></em></span>
+            <span class="meta-chip"><b>材质</b><em id="detailMaterial"></em></span>
+          </div>
+          <p class="imperial-voice" id="detailVoice"></p>
+          <div class="history-note">
+            <p class="history-label">入匣小识</p>
+            <p id="detailHistory"></p>
+          </div>
+          <p class="interaction-hint" id="detailStatus">可用手指或鼠标旋转、缩放，360°查看器形与纹饰。</p>
+          <div class="card-actions">
+            <button class="secondary-button" id="inspectButton" type="button">细看此物</button>
+            <button class="primary-button" id="replaceButton" type="button">替换此物</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="sheet vault-sheet" id="vaultSheet" aria-hidden="true">
+      <button class="sheet-backdrop" data-close="vault" type="button" aria-label="关闭宝库"></button>
+      <div class="sheet-panel vault-panel">
+        <div class="sheet-handle"></div>
+        <div class="vault-heading">
+          <div>
+            <p class="eyebrow">THE IMPERIAL VAULT</p>
+            <h2>换一件朕的珍玩</h2>
+          </div>
+          <button class="sheet-close" data-close="vault" type="button" aria-label="关闭">×</button>
+        </div>
+        <p class="vault-note">左右拖动细看器形，再钦点一件替换当前隔间。</p>
+        <div class="vault-grid" id="vaultGrid"></div>
+      </div>
+    </section>
+
+    <section class="sheet" id="cardSheet" aria-hidden="true">
+      <button class="sheet-backdrop" data-close="card" type="button" aria-label="关闭纪念卡"></button>
+      <div class="sheet-panel card-panel">
+        <button class="sheet-close" data-close="card" type="button" aria-label="关闭">×</button>
+        <p class="eyebrow">IMPERIAL SELECTION</p>
+        <h2>寡人钦点 · 十件皇家选品</h2>
+        <canvas id="memoryCanvas" width="1080" height="1440" aria-label="皇家选品纪念卡"></canvas>
+        <div class="card-actions">
+          <button class="secondary-button" data-close="card" type="button">再改改</button>
+          <button class="primary-button" id="saveCardButton" type="button">保存图片</button>
+        </div>
+        <p class="save-tip">若小工具拦截下载，可直接截图保存。</p>
+      </div>
+    </section>
+
+    <section class="help-popover" id="helpPopover" aria-hidden="true">
+      <button class="help-backdrop" id="helpBackdrop" type="button" aria-label="关闭玩法"></button>
+      <div class="help-card">
+        <span class="theme-seal">玩法</span>
+        <h2>替朕重新排一匣</h2>
+        <ol>
+          <li><strong>换一局</strong><span>柜门关闭，再随机打开一个新主题。</span></li>
+          <li><strong>轻点隔间</strong><span>查看物件，再从宝库里替换。</span></li>
+          <li><strong>长按拖动</strong><span>把整个隔间与另一格交换位置。</span></li>
+        </ol>
+        <button class="primary-button" id="helpClose" type="button">朕明白了</button>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./collection-3d.js?v=6"></script>
+    <script src="./app.js?v=13"></script>
+  </body>
+</html>

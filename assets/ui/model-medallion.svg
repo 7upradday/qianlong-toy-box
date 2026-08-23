@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <defs>
+    <radialGradient id="paper" cx="50%" cy="42%" r="65%">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="1" stop-color="#ddcdb4"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#paper)"/>
+  <circle cx="300" cy="270" r="158" fill="none" stroke="#9b5f3d" stroke-width="5" opacity=".55"/>
+  <path d="M300 126c50 58 78 105 78 146 0 51-35 92-78 92s-78-41-78-92c0-41 28-88 78-146Z" fill="#b34235" opacity=".78"/>
+  <path d="M163 325c68-9 114 5 137 43-27 42-76 55-145 39 10-31 13-58 8-82Zm274 0c-68-9-114 5-137 43 27 42 76 55 145 39-10-31-13-58-8-82Z" fill="#6d8764" opacity=".72"/>
+  <text x="300" y="506" text-anchor="middle" font-family="serif" font-size="42" fill="#5a3428">皇家三维珍玩</text>
+</svg>
