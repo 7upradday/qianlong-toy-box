@@ -1,2 +1,13 @@
 .DS_Store
 **/.DS_Store
+*.zip
+移动端预览.png
+interaction-lab.*
+*.md
+!README.md
+assets/core/
+assets/vault/
+assets/models/petal-bowl.glb
+assets/models/pink-lotus.glb
+assets/models/pink-teapot.glb
+assets/models/porcelain-vase.glb

@@ -1,0 +1,75 @@
+/* Lacquer and bronze controls; the original paper background is unchanged. */
+.primary-button,.secondary-button,.renew-button,.model-open-button {
+  position:relative; border-radius:8px; min-height:50px; font-size:15px;
+  letter-spacing:.08em; transition:transform .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.primary-button {
+  border:1px solid #6b2a22; color:#fff5e4;
+  background:linear-gradient(180deg,#a04939 0%,#83372d 65%,#793027 100%);
+  box-shadow:inset 0 1px 0 #d39270, inset 0 0 0 3px #ffffff0a,0 3px 0 #60261f,0 8px 15px #502c1826;
+}
+.primary-button::after {content:"";position:absolute;inset:4px;border:1px solid #efc18b38;border-radius:4px;pointer-events:none}
+.secondary-button,.renew-button {
+  color:#4d382a;border:1px solid #bca789;background:linear-gradient(#fcf9f2,#ece3d4);
+  box-shadow:inset 0 1px #fff,0 2px 0 #c5b69d,0 5px 12px #50322112;
+}
+.primary-button:hover,.secondary-button:hover,.renew-button:hover{transform:translateY(-2px)}
+.primary-button:active,.secondary-button:active,.renew-button:active{transform:translateY(2px);box-shadow:inset 0 1px 4px #32140d25}
+button:disabled{cursor:wait;opacity:.55;transform:none!important}
+.icon-button,.sheet-close{border-radius:8px;border-color:#bca789;background:#fbf8ef;box-shadow:0 2px 0 #bca78955}
+.physical-stage{display:none;position:relative;width:100%;height:clamp(360px,58vw,490px)}
+.physical-ready .physical-stage{display:none}
+.physical-ready.tray-is-open .physical-stage{display:block}
+.physical-ready #cabinet{display:none!important}
+.physical-ready #cabinetModelStage{display:block!important}
+.physical-ready.tray-is-open #cabinetModelStage{display:none!important}
+.physical-ready .cabinet-wrap{margin:10px auto 4px;perspective:none;min-height:0;width:100%}
+#cabinetCanvas{width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab;outline-offset:-4px}
+#cabinetCanvas:active{cursor:grabbing}
+.physical-status{position:absolute;bottom:72px;left:0;right:0;text-align:center;color:#78604a;font-size:12px;pointer-events:none;transition:opacity .3s}
+.physical-status:empty{opacity:0}
+.physical-open{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);padding:0 28px;min-width:180px;white-space:nowrap}
+.physical-open:hover{transform:translate(-50%,-2px)}
+.physical-open:active{transform:translate(-50%,2px)}
+.physical-open[hidden],.physical-return[hidden]{display:none}
+.physical-slots{position:absolute;inset:0;pointer-events:none}
+.scene-slot{position:absolute;border:0;background:transparent;color:transparent;padding:0;pointer-events:none;border-radius:3px;font-size:0;transform:translate(-50%,-50%)}
+.scene-slot:focus-visible{outline:2px solid #b39156;outline-offset:3px;background:#d0b27a22}
+.scene-slot:focus-visible::after{content:attr(data-name);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);white-space:nowrap;background:#f8f2e6;color:#493525;padding:6px 9px;font-size:13px;border-radius:3px}
+.physical-return{position:absolute;bottom:0;left:50%;transform:translateX(-50%);padding:0 20px;z-index:5;white-space:nowrap}
+.physical-return:hover{transform:translate(-50%,-2px)}
+.physical-ready .vault-item img{width:100%;height:115px;object-fit:contain;background:#fff;border-radius:5px}
+@media(max-width:480px){
+ .physical-stage{height:370px;margin-top:0}
+ .physical-ready .cabinet-wrap{margin-top:0}
+ .physical-ready .stage{padding-top:0}
+ .primary-button,.secondary-button,.renew-button{font-size:14px;min-height:48px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+/* Keep the original model-viewer detail card and full rotate / zoom controls. */
+.physical-ready #detailSheet .artifact-card{grid-template-rows:minmax(250px,42svh) minmax(0,1fr)}
+.physical-ready #detailSheet .artifact-visual{min-height:250px}
+.physical-ready #detailModel{min-height:250px}
+.physical-ready .physical-stage{height:clamp(320px,50vw,450px)}
+.physical-ready .physical-open,.physical-ready .physical-return{display:none!important}
+.physical-status{bottom:6px}
+#cabinetCanvas{touch-action:none}
+@media(max-width:480px){
+ .physical-ready .physical-stage{height:340px}
+ .physical-ready #detailSheet .artifact-card{grid-template-rows:minmax(230px,36svh) minmax(0,1fr)}
+ .physical-ready #detailSheet .artifact-visual,.physical-ready #detailModel{min-height:230px}
+}
+@media(max-height:700px){
+ .physical-ready #detailSheet .artifact-card{grid-template-rows:minmax(180px,34svh) minmax(0,1fr)}
+ .physical-ready #detailSheet .artifact-visual,.physical-ready #detailModel{min-height:180px}
+}
+/* A shared stage prevents reflow at the cut between the original GLB and tray. */
+.physical-ready .cabinet-wrap{position:relative;height:450px}
+.physical-ready #physicalStage,.physical-ready #cabinetModelStage{height:100%;min-height:0}
+.physical-ready #cabinetModel{height:100%;min-height:0}
+.physical-ready.cabinet-transitioning #cabinetModelStage,
+.physical-ready.cabinet-transitioning #physicalStage{display:block!important;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transition:none!important}
+.physical-ready.cabinet-transitioning #modelOpenButton{visibility:hidden}
+.physical-ready .theme-reveal{min-height:62px;max-height:76px;margin:2px 4px 12px}
+#cabinetRotateHint[hidden]{display:none!important}
+@media(max-width:480px){.physical-ready .cabinet-wrap{height:360px}}

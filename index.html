@@ -6,7 +6,9 @@
     <meta name="theme-color" content="#2b1513">
     <meta name="description" content="打开乾隆的玩具盒，抽取一局皇家收藏。">
     <title>乾隆的玩具盒</title>
-    <link rel="stylesheet" href="./styles.css?v=11">
+    <link rel="stylesheet" href="./styles.css?v=15">
+
+  <link rel="stylesheet" href="./cabinet-physical.css?v=3">
     <script type="module" src="./assets/vendor/model-viewer.min.js?v=2"></script>
   </head>
   <body>
@@ -27,6 +29,8 @@
         <button class="icon-button help-button" type="button" aria-label="查看玩法">?</button>
       </header>
 
+      <div class="cabinet-rotate-hint" id="cabinetRotateHint" hidden></div>
+
       <section class="stage" aria-label="乾隆收藏柜">
         <div class="theme-reveal" aria-live="polite">
           <span class="theme-seal">御选</span>
@@ -35,7 +39,13 @@
         </div>
 
         <div class="cabinet-wrap" id="cabinetViewer">
-          <div class="cabinet-rotate-hint" id="cabinetRotateHint">左右滑动旋转柜体 · 轻点柜体进入俯视御匣</div>
+          <div id="physicalStage" class="physical-stage" aria-label="三维瑾瑜匣">
+            <canvas id="cabinetCanvas" aria-label="瑾瑜匣，可拖动观察，轻点开匣或查看器物"></canvas>
+            <div class="physical-status" id="physicalStatus" role="status">正在备匣…</div>
+            <div class="physical-slots" id="physicalSlots"></div>
+            <button class="physical-open primary-button" id="physicalOpen" type="button">拉开御匣 <span aria-hidden="true">↓</span></button>
+            <button class="physical-return secondary-button" id="physicalReturn" type="button" hidden>放回原格</button>
+          </div>
           <div class="cabinet-model-stage" id="cabinetModelStage">
             <div class="stage-aura" aria-hidden="true"></div>
             <model-viewer
@@ -52,8 +62,8 @@
               shadow-softness="0.85"
               exposure="1.08"
               camera-orbit="20deg 72deg auto"
-              min-camera-orbit="-45deg 45deg auto"
-              max-camera-orbit="45deg 88deg auto"
+              min-camera-orbit="auto 20deg 40%"
+              max-camera-orbit="auto 100deg 160%"
               loading="eager">
               <div class="model-progress" slot="progress-bar"><span></span></div>
             </model-viewer>
@@ -86,7 +96,7 @@
             <span class="renew-icon" aria-hidden="true">↻</span>
             <span>换一局</span>
           </button>
-          <button class="primary-button" id="cardButton" type="button">生成钦点卡</button>
+          <button class="primary-button" id="cardButton" type="button">完成选品 · 查看派系</button>
         </div>
       </section>
     </main>
@@ -169,15 +179,61 @@
       </div>
     </section>
 
+    <section class="taste-result" id="tasteResult" aria-hidden="true">
+      <div class="taste-result-inner">
+        <header class="taste-result-nav">
+          <button class="result-back" id="resultBackButton" type="button" aria-label="返回百宝匣">←</button>
+          <div>
+            <p class="eyebrow">IMPERIAL TASTE REPORT</p>
+            <p>皇家选品风格解读</p>
+          </div>
+          <span class="result-count">十件</span>
+        </header>
+
+        <section class="taste-hero">
+          <span class="taste-seal">御鉴</span>
+          <p class="taste-overline">你的文物选品派系是</p>
+          <h2 id="tasteIdentity">御花园秩序派</h2>
+          <p class="taste-code" id="tasteCode">FLORAL · ORDERED</p>
+          <p class="taste-summary" id="tasteSummary"></p>
+          <div class="taste-hero-items" id="tasteHeroItems" aria-label="你的代表器物"></div>
+          <span class="scroll-cue">继续下滑看朕如何判定 ↓</span>
+        </section>
+
+        <section class="taste-section taste-score-section">
+          <p class="section-number">壹</p>
+          <p class="eyebrow">YOUR TASTE AXES</p>
+          <h3>你的选品，不只是一种颜色</h3>
+          <div class="taste-axis-list" id="tasteAxes"></div>
+        </section>
+
+        <section class="taste-section">
+          <p class="section-number">贰</p>
+          <p class="eyebrow">THE INTERPRETATION</p>
+          <h3>朕从这十件里看见了什么</h3>
+          <div class="taste-insights" id="tasteInsights"></div>
+        </section>
+
+        <section class="taste-section compare-section">
+          <p class="section-number">叁</p>
+          <p class="eyebrow">COMPARE WITH A FRIEND</p>
+          <h3>测测 Ta 和我的审美取向有多相似？</h3>
+          <p>将你的十件皇家选品制成选品册，邀请朋友选出他们的十件。</p>
+          <button class="primary-button" id="resultShareButton" type="button">分享结果图</button>
+          <button class="result-edit-button" id="resultEditButton" type="button">返回再改改</button>
+        </section>
+      </div>
+    </section>
+
     <section class="sheet" id="cardSheet" aria-hidden="true">
       <button class="sheet-backdrop" data-close="card" type="button" aria-label="关闭纪念卡"></button>
       <div class="sheet-panel card-panel">
         <button class="sheet-close" data-close="card" type="button" aria-label="关闭">×</button>
         <p class="eyebrow">IMPERIAL SELECTION</p>
-        <h2>寡人钦点 · 十件皇家选品</h2>
+        <h2>你的皇家选品分享海报</h2>
         <canvas id="memoryCanvas" width="1080" height="1440" aria-label="皇家选品纪念卡"></canvas>
         <div class="card-actions">
-          <button class="secondary-button" data-close="card" type="button">再改改</button>
+          <button class="secondary-button" data-close="card" type="button">返回解读</button>
           <button class="primary-button" id="saveCardButton" type="button">保存图片</button>
         </div>
         <p class="save-tip">若小工具拦截下载，可直接截图保存。</p>
@@ -192,7 +248,7 @@
         <ol>
           <li><strong>换一局</strong><span>柜门关闭，再随机打开一个新主题。</span></li>
           <li><strong>轻点隔间</strong><span>查看物件，再从宝库里替换。</span></li>
-          <li><strong>长按拖动</strong><span>把整个隔间与另一格交换位置。</span></li>
+          <li><strong>长按拖动</strong><span>将器物拖到另一格，交换摆放位置。</span></li>
         </ol>
         <button class="primary-button" id="helpClose" type="button">朕明白了</button>
       </div>
@@ -200,6 +256,7 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script src="./collection-3d.js?v=6"></script>
-    <script src="./app.js?v=13"></script>
+    <script src="./app.js?v=v2-vault-fix"></script>
+    <script src="./cabinet-bootstrap.js?v=v2-vault-fix"></script>
   </body>
 </html>
