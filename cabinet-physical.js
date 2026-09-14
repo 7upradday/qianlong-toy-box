@@ -54,7 +54,7 @@ class Cabinet {
     this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);
   }
   texture(region) {
-    const t=new THREE.TextureLoader().load('./assets/ui/cabinet-atlas.jpg',()=>this.invalidate());
+    const t=new THREE.TextureLoader().load('./assets/ui/cabinet-atlas.jpg?v=fast-2',()=>this.invalidate());
     t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping;
     t.repeat.set(region[2],region[3]);t.offset.set(region[0],1-region[1]-region[3]);
     t.anisotropy=Math.min(8,this.renderer.capabilities.getMaxAnisotropy());return t;

@@ -8,6 +8,13 @@ if (window.location.protocol === "file:") {
   document.body.classList.add("is-file-mode");
 }
 
+let modelViewerPromise;
+function prepareModelViewer() {
+  if (customElements.get("model-viewer")) return Promise.resolve();
+  if (!modelViewerPromise) modelViewerPromise = import("./assets/vendor/model-viewer.min.js?v=fast-3");
+  return modelViewerPromise;
+}
+
 const legacyArtifacts = [
   {
     id: "core-01",
@@ -1102,7 +1109,7 @@ function downloadCard() {
   }, "image/png");
 }
 
-introButton.addEventListener("click", () => {
+introButton.addEventListener("click", async () => {
   const lines = [
     "朕每次开匣，都会换一种心情。至于这一局是什么主题——你自己看。",
     "看中哪件就点开，想换便换；长按不松手，还能给器物换个位置。"
@@ -1112,8 +1119,18 @@ introButton.addEventListener("click", () => {
     if (state.introStep === 0) qianlongPortrait.src = "./assets/ui/qianlong-wink.jpg";
     state.introStep += 1;
     introButton.textContent = state.introStep === lines.length ? "替朕开匣" : "继续听旨";
+    // Split the two 3D runtimes across the reading pauses so the opening screen
+    // paints immediately and each click receives a response before background work.
+    if (state.introStep === 1) prepareModelViewer().catch(() => {});
+    if (state.introStep === 2) window.preparePhysicalCabinet?.().catch(() => {});
     return;
   }
+  introButton.disabled = true;
+  const finalLabel = introButton.textContent;
+  if (!window.physicalCabinet) introButton.textContent = "正在备匣…";
+  try { await Promise.all([prepareModelViewer(), window.preparePhysicalCabinet?.()]); }
+  catch (error) { console.warn("Using compatible cabinet view", error); }
+  finally { introButton.disabled = false; introButton.textContent = finalLabel; }
   introOverlay.classList.add("is-hidden");
   chooseTheme();
   renderTray(true);
@@ -1202,7 +1219,6 @@ bindModelProgress(cabinetModel);
 bindModelProgress(detailModel);
 
 restoreSelection();
-renderTray();
 
 // Scene adapter keeps selection, reports and sharing in the original application.
 window.cabinetApp = {
@@ -1210,6 +1226,7 @@ window.cabinetApp = {
   open: openCabinet,
   inspect: showDetail,
   toast: showToast,
+  renderFallback: () => renderTray(),
   swap(a, b) {
     if (state.busy || a === b) return;
     [state.items[a], state.items[b]] = [state.items[b], state.items[a]];
