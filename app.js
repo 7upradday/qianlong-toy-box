@@ -1,6 +1,8 @@
 const corePath = "./assets/core/";
 const pinkPath = "./assets/vault/pink/";
 const weirdPath = "./assets/vault/weird/";
+const shareUrl = "https://www.7upradday.cn";
+const shareQrSource = "./assets/ui/share-qrcode.png?v=share-qr-1";
 
 const protocolWarning = document.querySelector("#protocolWarning");
 if (window.location.protocol === "file:") {
@@ -949,7 +951,10 @@ async function drawMemoryCard() {
   const startX = 70;
   const startY = 296;
 
-  const images = await Promise.all(state.items.map((item) => loadImage(item.image)));
+  const [images, shareQrImage] = await Promise.all([
+    Promise.all(state.items.map((item) => loadImage(item.image))),
+    loadImage(shareQrSource)
+  ]);
   state.items.forEach((item, index) => {
     const column = index % 2;
     const row = Math.floor(index / 2);
@@ -992,7 +997,12 @@ async function drawMemoryCard() {
   context.font = "25px serif";
   context.fillText("扫码和我比一局", 96, footerY + 139);
 
-  drawQrPlaceholder(context, 706, footerY + 8, 160, state.items.map((item) => item.id).join(""));
+  if (shareQrImage) {
+    context.save();
+    context.imageSmoothingEnabled = false;
+    context.drawImage(shareQrImage, 706, footerY + 8, 160, 160);
+    context.restore();
+  }
 
   context.textAlign = "left";
   context.fillStyle = "#4f3931";
@@ -1005,6 +1015,9 @@ async function drawMemoryCard() {
   context.fillStyle = "#a3342b";
   context.font = "18px sans-serif";
   context.fillText(report.code, 892, footerY + 140);
+  context.fillStyle = "#806c61";
+  context.font = "14px sans-serif";
+  context.fillText(shareUrl.replace("https://", ""), 892, footerY + 164);
 }
 
 function roundedRect(context, x, y, width, height, radius) {
@@ -1038,32 +1051,6 @@ function drawWrappedText(context, text, x, y, maxWidth, lineHeight, maxLines) {
     }
   }
   if (line) context.fillText(line, x, y + lineIndex * lineHeight);
-}
-
-function drawQrPlaceholder(context, x, y, size, seedText) {
-  context.fillStyle = "#fffdf7";
-  context.fillRect(x, y, size, size);
-  context.strokeStyle = "#9b3a31";
-  context.lineWidth = 3;
-  context.strokeRect(x, y, size, size);
-  const cells = 17;
-  const unit = (size - 20) / cells;
-  let seed = [...seedText].reduce((total, character) => total + character.charCodeAt(0), 0);
-  const finder = (column, row) => (column < 5 && row < 5) || (column > 11 && row < 5) || (column < 5 && row > 11);
-  context.fillStyle = "#2d211d";
-  for (let row = 0; row < cells; row += 1) {
-    for (let column = 0; column < cells; column += 1) {
-      seed = (seed * 9301 + 49297) % 233280;
-      const on = finder(column, row) || seed / 233280 > 0.55;
-      if (on) context.fillRect(x + 10 + column * unit, y + 10 + row * unit, Math.ceil(unit), Math.ceil(unit));
-    }
-  }
-  context.fillStyle = "rgba(255,253,247,.92)";
-  context.fillRect(x + 35, y + size / 2 - 18, size - 70, 36);
-  context.fillStyle = "#7e3029";
-  context.font = "700 16px sans-serif";
-  context.textAlign = "center";
-  context.fillText("二维码占位", x + size / 2, y + size / 2 + 6);
 }
 
 function loadImage(source) {
