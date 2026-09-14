@@ -146,6 +146,9 @@ class Cabinet {
     const outer=document.querySelector('#cabinetModelStage');
     const viewer=document.querySelector('#cabinetModel');
     this.moving=true;this.isOpen=open;
+    // The landing view only needs the exterior cabinet. Start downloading the
+    // ten tray objects after the visitor actually opens the box.
+    if(open&&!this.slots.some(slot=>slot.model)&&this.items.length)this.update(this.items,this.layout,true);
     // Both surfaces share the same fixed stage while the eye approaches and looks down.
     document.body.classList.add('cabinet-transitioning');
     document.body.classList.add('tray-is-open');
@@ -184,7 +187,7 @@ class Cabinet {
     canvas.setAttribute('aria-label',this.isInspecting?'已提起器物，左右拖动旋转':this.isOpen?'三维百宝格，轻点查看，长按拖动换位':'瑾瑜匣，轻点打开，左右拖动观察');
     this.invalidate();
   }
-  async update(items,layout){
+  async update(items,layout,loadModels=this.isOpen){
     const generation=++this.generation;
     this.items=items.map(i=>({...i}));this.layout=layout.map(l=>[...l]);this.readyCount=0;
     this.grid.traverse(o=>{if(o.isMesh && o.userData.structural)o.geometry.dispose()});
@@ -211,6 +214,7 @@ class Cabinet {
       const m=this.board(w,.18,d,x,.14,z,this.innerWood,this.grid,.006);m.userData.structural=true;
     }
     this.controls();this.loadStatus();
+    if(!loadModels){status.textContent='';return}
     // Bounded loading avoids decoding every collection model at once.
     let next=0;
     const worker=async()=>{
@@ -369,7 +373,7 @@ class Cabinet {
 try {
   document.body.classList.add('physical-ready');
   const cabinet=new Cabinet();window.physicalCabinet=cabinet;
-  const current=app.getState();cabinet.update(current.items,current.layout);
+  const current=app.getState();cabinet.update(current.items,current.layout,false);
   document.getElementById("trayGrid").replaceChildren();
 
   canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();status.textContent='画面暂时中断，请刷新后重试';});

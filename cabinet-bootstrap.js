@@ -1,6 +1,6 @@
 (async()=>{
   try {
-    await import('./cabinet-physical.js?v=v2-vault-fix');
+    await import('./cabinet-physical.js?v=fast-1');
     if(!window.physicalCabinet)throw window.cabinetSceneError||new Error('Scene initialization failed');
   }catch(error){
     const notice=document.createElement('details');notice.id='cabinetCompatibility';

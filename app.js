@@ -359,15 +359,11 @@ function renderVault() {
     button.className = "vault-item";
     button.type = "button";
     button.dataset.artifactId = item.id;
-    const viewer = document.createElement("model-viewer");
-    viewer.src = item.model;
-    viewer.alt = `${item.name} 三维模型`;
-    viewer.setAttribute("camera-controls", "");
-    viewer.setAttribute("interaction-prompt", "none");
-    viewer.setAttribute("touch-action", "pan-y");
-    viewer.setAttribute("shadow-intensity", ".8");
-    viewer.setAttribute("loading", "lazy");
-    applyModelOrientation(viewer, item);
+    const viewer = document.createElement("img");
+    viewer.src = item.image;
+    viewer.alt = item.name;
+    viewer.loading = "lazy";
+    viewer.decoding = "async";
     const label = document.createElement("span");
     label.textContent = item.short;
     button.append(viewer, label);
@@ -1229,10 +1225,6 @@ async function ensureVault() {
   if (vaultInitialized) return;
   if (!vaultLoading) {
     vaultLoading = (async () => {
-      // Match the entry-page URL: different query strings execute the module twice.
-      if (!customElements.get("model-viewer")) {
-        await import("./assets/vendor/model-viewer.min.js?v=2");
-      }
       renderVault();
       vaultInitialized = true;
     })().finally(() => { vaultLoading = null; });

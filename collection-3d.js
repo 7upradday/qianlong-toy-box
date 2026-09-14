@@ -1,4 +1,5 @@
 const collectionModelPath = "./assets/models/collection/";
+const collectionAssetVersion = "fast-1";
 const collectionWhiteImagePath = "./assets/artifacts/white/";
 const collectionWhiteImageIds = new Set([
   "m01", "m02", "m03", "m04", "m05", "m06", "m07", "m08", "m09", "m10",
@@ -122,7 +123,7 @@ window.QIANLONG_COLLECTION_3D = collectionRows.map(([id, name, short, material, 
   voice,
   history: resolveHistory(id, name, material),
   orientation: id === "m15" ? "0deg 90deg 0deg" : "",
-  model: file ? `${collectionModelPath}${encodeURIComponent(file)}` : "",
+  model: file ? `${collectionModelPath}${encodeURIComponent(file)}?v=${collectionAssetVersion}` : "",
   image: collectionWhiteImageIds.has(id)
     ? `${collectionWhiteImagePath}${id}.jpg`
     : "./assets/ui/model-medallion.svg",
