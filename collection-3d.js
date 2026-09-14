@@ -1,6 +1,7 @@
 const collectionModelPath = "./assets/models/collection/";
 const collectionAssetVersion = "fast-1";
 const collectionWhiteImagePath = "./assets/artifacts/white/";
+const correctedWhiteImageIds = new Set(["m01", "m21"]);
 const collectionWhiteImageIds = new Set([
   "m01", "m02", "m03", "m04", "m05", "m06", "m07", "m08", "m09", "m10",
   "m11", "m12", "m13", "m14", "m15", "m16", "m17", "m18", "m19", "m20",
@@ -9,7 +10,7 @@ const collectionWhiteImageIds = new Set([
 ]);
 
 const collectionRows = [
-  ["m01", "乾隆六年洋彩番莲纹红地茶壶", "红地番莲茶壶", "洋彩瓷", ["pink", "porcelain", "flower"], "红地已经够热闹，朕还要把番莲纹铺得密密匝匝。喝茶可以慢，排场不能淡。", "乾隆六年 洋彩番蓮紋紅地茶壺.glb"],
+  ["m01", "粉彩荷花壶", "粉彩荷花壶", "粉彩瓷", ["pink", "porcelain", "flower", "weird"], "壶身与壶盖都开成层层荷瓣，连壶流旁的枝蔓也绕出一朵小花。喝茶只是用途，仿生才是巧思。", "粉彩荷花壶.glb", "器形依据用户交付 GLB 与项目现有同器形素材校正；准确年代与馆藏出处待确认"],
   ["m02", "乾隆年制款画珐琅牡丹纹海棠式花篮", "珐琅牡丹花篮", "画珐琅", ["flower", "colorful", "enamel"], "花篮不必等春天，牡丹也不必谢。朕把整座御花园缩成一件案头清供。", "乾隆年制款画珐琅牡丹纹海棠式花篮.glb"],
   ["m03", "乾隆款画珐琅开光山水花鸟图盖碗", "山水花鸟盖碗", "画珐琅", ["enamel", "flower", "landscape"], "揭盖喝茶之前，先绕着看一圈山水花鸟。一只盖碗，也得容得下四时景致。", "乾隆款画珐琅开光山水花鸟图盖碗.glb"],
   ["m04", "乾隆款粉彩勾莲纹天球瓶", "勾莲纹天球瓶", "粉彩瓷", ["porcelain", "flower", "colorful"], "瓶腹圆得像一颗小天球，朕偏又缠上一身勾莲，让规整与繁复正面交锋。", "乾隆款粉彩勾莲纹天球瓶.glb"],
@@ -29,7 +30,7 @@ const collectionRows = [
   ["m18", "碧玉痕都斯坦风格荷花式吸杯", "碧玉荷花吸杯", "碧玉", ["jade", "green", "flower", "western"], "碧玉薄得透光，荷花又带着异域线条。朕的收藏里，远方来的风格也要入乡随俗。", "碧玉痕都斯坦风格 荷花式吸杯.glb"],
   ["m19", "铜胎画珐琅课子图鼻烟壶", "课子图鼻烟壶", "铜胎画珐琅", ["enamel", "portrait", "scholar", "weird"], "方寸壶面还要讲一出课子读书的故事。朕把教诲画在掌心，随手一转便能看见。", "铜胎画珐琅课子图鼻烟壶.glb"],
   ["m20", "粉彩珊瑚红地番莲八吉祥纹奔巴壶", "珊瑚红奔巴壶", "粉彩瓷", ["red", "porcelain", "ritual", "colorful"], "珊瑚红地压住全场，番莲与八吉祥再层层铺开。礼仪用器，也可以极其抢眼。", "粉彩珊瑚紅地番蓮八吉祥紋賁巴壺.glb"],
-  ["m21", "粉彩百蝶描金云蝠纹海棠形包袱瓶", "百蝶包袱瓶", "粉彩描金瓷", ["pink", "porcelain", "weird", "colorful"], "包袱、海棠、百蝶、云蝠全挤在一件瓶上。朕倒要看看，吉祥话最多能叠到第几层。", "粉彩百蝶 描金云蝠纹海棠形包袱瓶 .glb"],
+  ["m21", "白套红玻璃花卉鼻烟壶", "套红花卉鼻烟壶", "白、红套色玻璃，铜雕花盖", ["red", "glass", "flower", "original"], "乳白玻璃外再套一层红玻璃，花蝶不是画出来，而是从颜色里雕出来。小小一壶，也要近看才见功夫。", "白套红玻璃花卉鼻烟壶.glb", "国立故宫博物院数字典藏，故杂000186N000000000，CC BY 4.0"],
   ["m22", "各种釉彩大瓶", "各种釉彩大瓶", "瓷", ["porcelain", "colorful", "weird", "original"], "一只瓶上汇集多种釉彩与装饰法，像把烧造本领排成一场大考。朕要看的，就是工匠能把多少绝活同时烧成。", "各种釉彩大瓶.glb"],
   ["m23", "粉彩莲花水丞", "莲花水丞", "粉彩瓷", ["pink", "porcelain", "flower", "scholar"], "水丞原是案头盛水的小器，朕偏让它开成一池莲花。研墨之前，先赏一眼花。", "粉彩莲花水丞.glb"],
   ["m24", "粉彩莲花盖碗及底座", "莲花盖碗套件", "粉彩瓷", ["pink", "porcelain", "flower"], "盖、碗、托三件合在一起才算完整。拆开各有花瓣，合上便是一朵莲。", "粉彩莲花盖碗及底座.glb"],
@@ -47,7 +48,7 @@ const collectionRows = [
 ];
 
 function resolveDynasty(id, name) {
-  return id === "m22" || id === "m30" || name.includes("乾隆") ? "清·乾隆" : "清";
+  return id === "m21" || id === "m22" || id === "m30" || name.includes("乾隆") ? "清·乾隆" : "清";
 }
 
 function resolveCategory(name, material) {
@@ -65,7 +66,7 @@ function resolveCategory(name, material) {
 }
 
 function resolveAttribute(name) {
-  if (/茶壶|盖碗|茶器|执壶/.test(name)) return "茶器";
+  if (/茶壶|荷花壶|盖碗|茶器|执壶/.test(name)) return "茶器";
   if (/碗|杯/.test(name)) return "饮食器";
   if (/鼻烟壶/.test(name)) return "随身用具";
   if (/水丞/.test(name)) return "文房水器";
@@ -81,6 +82,7 @@ function resolveAttribute(name) {
 
 function resolveHistory(id, name, material) {
   const special = {
+    m01: "壶身、壶盖与圈足均塑成层叠荷瓣，白色壶流旁以绿色枝蔓连接小花。现有三维模型与项目旧素材中的荷花壶器形相符；准确年代与馆藏出处仍待补证。",
     m06: "乾隆六十年（1795），宫中为归政后的太上皇身份制作多方“太上皇帝之宝”。宝玺不仅用来钤印，也是皇权与身份的凭信。",
     m09: "核雕以果核为材，在极小尺度上雕出人物、舟舱和门窗；可开合、可细看的机关，正适合收入讲究“匣中套盒”的百宝匣。",
     m10: "宫廷文房不只有笔墨纸砚，也讲究墨的造型、题款与香气。把墨制成月形，是书写工具，也是可以陈设把玩的雅物。",
@@ -88,6 +90,7 @@ function resolveHistory(id, name, material) {
     m18: "清代所称“痕都斯坦玉器”多指北印度与今巴基斯坦部分地区的玉作。乾隆喜爱其薄胎、花叶造型，宫中还设有专门的痕玉作坊。",
     m17: "吸杯把杯身与中空花梗结合，兼具饮用机关与荷花仿生造型。粉彩以柔和的明暗渲染花瓣，使实用器看起来像一朵刚展开的荷花。",
     m19: "鼻烟壶是清代常见的随身小器。铜胎画珐琅能在掌心大小的曲面上表现人物故事；“课子图”以教子读书为题，也让把玩器带有劝学意味。",
+    m21: "器身为乳白色半透明玻璃，套饰红色玻璃口缘、圈足及花蝶纹，配铜雕花盖与牙匙。底部阴刻双行楷书“乾隆年制”。",
     m22: "清乾隆各种釉彩大瓶汇集多种高温、低温釉彩与装饰技法，因工艺繁复而常被称为“瓷母”。它像一份把清代制瓷能力集中展示出来的样本。",
     m23: "水丞用于盛水，供书写时研墨取用，是传统文房中的小型水器。这件器物以重叠莲瓣塑出水池般的外形，把案头实用功能藏进仿生造型。",
     m30: "国立故宫博物院将此器定名为“粉彩绿地番莲纹茶壶”，时代为清乾隆。器表以绿彩为地，满绘番莲、如意与莲瓣纹，壶底有“大清乾隆年制”篆款。",
@@ -111,7 +114,7 @@ function resolveHistory(id, name, material) {
   return `这类${resolveCategory(name, material)}兼具实用与把玩意味。收入百宝匣后，器形、材质和机关都成为皇帝比较工艺与趣味的选品线索。`;
 }
 
-window.QIANLONG_COLLECTION_3D = collectionRows.map(([id, name, short, material, tags, voice, file]) => ({
+window.QIANLONG_COLLECTION_3D = collectionRows.map(([id, name, short, material, tags, voice, file, source]) => ({
   id,
   name,
   short,
@@ -125,7 +128,7 @@ window.QIANLONG_COLLECTION_3D = collectionRows.map(([id, name, short, material, 
   orientation: id === "m15" ? "0deg 90deg 0deg" : "",
   model: file ? `${collectionModelPath}${encodeURIComponent(file)}?v=${collectionAssetVersion}` : "",
   image: collectionWhiteImageIds.has(id)
-    ? `${collectionWhiteImagePath}${id}.jpg`
+    ? `${collectionWhiteImagePath}${id}.jpg${correctedWhiteImageIds.has(id) ? "?v=artifact-fix-1" : ""}`
     : "./assets/ui/model-medallion.svg",
-  source: "用户整理并交付的 GLB；器名依据模型文件名，正式史料说明待逐件校定"
+  source: source || "用户整理并交付的 GLB；器名依据模型文件名，正式史料说明待逐件校定"
 }));

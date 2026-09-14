@@ -1,5 +1,5 @@
 [
-  {"id":"m01","name":"乾隆六年洋彩番莲纹红地茶壶","sourceFile":"乾隆六年 洋彩番蓮紋紅地茶壺.jpg","asset":"m01.jpg"},
+  {"id":"m01","name":"粉彩荷花壶","generatedFromDetailModel":true,"asset":"m01.jpg","note":"器形依据详情页 GLB 与项目现有同器形素材校正；准确年代与馆藏出处待确认"},
   {"id":"m02","name":"乾隆年制款画珐琅牡丹纹海棠式花篮","sourceFile":"乾隆年制款画珐琅牡丹纹海棠式花篮.jpg","asset":"m02.jpg"},
   {"id":"m03","name":"乾隆款画珐琅开光山水花鸟图盖碗","sourceFile":"乾隆款画珐琅开光山水花鸟图盖碗.jpg","asset":"m03.jpg"},
   {"id":"m04","name":"乾隆款粉彩勾莲纹天球瓶","sourceFile":"乾隆款粉彩勾莲纹天球瓶.jpg","asset":"m04.jpg"},
@@ -19,7 +19,7 @@
   {"id":"m18","name":"碧玉痕都斯坦风格荷花式吸杯","sourceFile":"碧玉痕都斯坦风格 荷花式吸杯.jpeg","asset":"m18.jpg"},
   {"id":"m19","name":"铜胎画珐琅课子图鼻烟壶","absoluteSource":"/var/folders/gy/tqlszttn2dd6454s398ltnqw0000gn/T/codex-clipboard-0fa45dae-1a2b-4b4d-b2ef-70ece59f6408.png","asset":"m19.jpg"},
   {"id":"m20","name":"粉彩珊瑚红地番莲八吉祥纹奔巴壶","sourceFile":"清乾隆 粉彩珊瑚紅地番蓮八吉祥紋賁巴壺 《大清乾隆年製》款.png","asset":"m20.jpg"},
-  {"id":"m21","name":"粉彩百蝶描金云蝠纹海棠形包袱瓶","sourceFile":"大清道光 粉彩百蝶 描金云蝠纹海棠形包袱瓶.jpg","asset":"m21.jpg","note":"源文件标注道光，词条后续需复核年代"},
+  {"id":"m21","name":"白套红玻璃花卉鼻烟壶","generatedFromDetailModel":true,"asset":"m21.jpg","source":"国立故宫博物院数字典藏，故杂000186N000000000，CC BY 4.0"},
   {"id":"m22","name":"各种釉彩大瓶","absoluteSource":"/var/folders/gy/tqlszttn2dd6454s398ltnqw0000gn/T/codex-clipboard-161bdd04-79d8-41ab-b78c-106463433a98.png","asset":"m22.jpg"},
   {"id":"m23","name":"粉彩莲花水丞","absoluteSource":"/var/folders/gy/tqlszttn2dd6454s398ltnqw0000gn/T/codex-clipboard-e8b62c2f-f984-449f-8c57-35e09ba5a66e.png","asset":"m23.jpg"},
   {"id":"m24","name":"粉彩莲花盖碗及底座","sourceFile":"清代乾隆时期的粉彩莲花盖碗及底座（或称莲花形盖罐带托盘）.jpg","asset":"m24.jpg"},
